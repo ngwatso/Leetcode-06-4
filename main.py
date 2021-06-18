@@ -78,29 +78,45 @@ class Solution:
 
         # Method 3 (BFS)
     
-        destinationNode = len(graph) - 1
-        graph = self.buildGraph(graph)
-        queue = deque()
-        queue.append((0, [0]))
-        res = []
-        while len(queue) > 0:
-            curr = queue.popleft()
-            currNode, currPath = curr[0], curr[1]
-            if currNode == destinationNode:
-                res.append(currPath)
-            else:
-                for neighbor in graph[currNode]:
-                    newPath = currPath.copy()
-                    newPath.append(neighbor)
-                    queue.append((neighbor, newPath))
+#         destinationNode = len(graph) - 1
+#         graph = self.buildGraph(graph)
+#         queue = deque()
+#         queue.append((0, [0]))
+#         res = []
+#         while len(queue) > 0:
+#             curr = queue.popleft()
+#             currNode, currPath = curr[0], curr[1]
+#             if currNode == destinationNode:
+#                 res.append(currPath)
+#             else:
+#                 for neighbor in graph[currNode]:
+#                     newPath = currPath.copy()
+#                     newPath.append(neighbor)
+#                     queue.append((neighbor, newPath))
                     
-        return res
+#         return res
         
-    def buildGraph(self, edges):
-        graph = {}
+#     def buildGraph(self, edges):
+#         graph = {}
             
-        for (node, neighbors) in enumerate(edges):
-            graph[node] = set() 
-            for neighbor in neighbors:
-                graph[node].add(neighbor)
-        return graph
+#         for (node, neighbors) in enumerate(edges):
+#             graph[node] = set() 
+#             for neighbor in neighbors:
+#                 graph[node].add(neighbor)
+#         return graph
+
+
+        # Method 4 (recursion)
+    
+        res = []
+        self.allPathsHelper(graph, 0, len(graph) - 1, [0], res)
+        return res
+    
+    def allPathsHelper(self, graph, currNode, destinationNode, currPath, res):
+        if currNode == destinationNode:
+            res.append(currPath)
+        else:
+            for neighbor in graph[currNode]:
+                newPath = currPath.copy()
+                newPath.append(neighbor)
+                self.allPathsHelper(graph, neighbor, destinationNode, newPath, res)
