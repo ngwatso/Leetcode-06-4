@@ -166,34 +166,91 @@ class Solution:
 
     def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
         
-        colorToChange = image[sr][sc]
-        stack = deque()
-        stack.append((sr, sc))
-        visited = set()
-        numRows, numCols = len(image), len(image[0])
+        # Method 1 - DFS
         
-        while len(stack) > 0:
-            currPixel = stack.pop()
-            if currPixel in visited:
-                continue
-            currRow, currCol = currPixel[0], currPixel[1]
-            image[currRow][currCol] = newColor
-            visited.add(currPixel)
+#         colorToChange = image[sr][sc]
+#         stack = deque()
+#         stack.append((sr, sc))
+#         visited = set()
+#         numRows, numCols = len(image), len(image[0])
+        
+#         while len(stack) > 0:
+#             currPixel = stack.pop()
+#             if currPixel in visited:
+#                 continue
+#             currRow, currCol = currPixel[0], currPixel[1]
+#             image[currRow][currCol] = newColor
+#             visited.add(currPixel)
             
-            topRow = currRow - 1
-            if topRow >= 0 and image[topRow][currCol] == colorToChange:
-                stack.append((topRow, currCol))
+#             topRow = currRow - 1
+#             if topRow >= 0 and image[topRow][currCol] == colorToChange:
+#                 stack.append((topRow, currCol))
                 
-            bottomRow = currRow + 1
-            if bottomRow < numRows and image[bottomRow][currCol] == colorToChange:
-                stack.append((bottomRow, currCol))
+#             bottomRow = currRow + 1
+#             if bottomRow < numRows and image[bottomRow][currCol] == colorToChange:
+#                 stack.append((bottomRow, currCol))
                 
-            leftCol = currCol - 1
-            if leftCol >= 0 and image[currRow][leftCol] == colorToChange:
-                stack.append((currRow, leftCol))
+#             leftCol = currCol - 1
+#             if leftCol >= 0 and image[currRow][leftCol] == colorToChange:
+#                 stack.append((currRow, leftCol))
                 
-            rightCol = currCol + 1
-            if rightCol < numCols and image[currRow][rightCol] == colorToChange:
-                stack.append((currRow, rightCol))
+#             rightCol = currCol + 1
+#             if rightCol < numCols and image[currRow][rightCol] == colorToChange:
+#                 stack.append((currRow, rightCol))
                 
-        return image
+#         return image
+
+
+        # Method 2 - BFS
+    
+#         colorToChange = image[sr][sc]
+#         queue = deque()
+#         queue.append((sr, sc))
+#         visited = set()
+#         numRows, numCols = len(image), len(image[0])
+        
+#         while len(queue) > 0:
+#             currPixel = queue.popleft()
+#             if currPixel in visited:
+#                 continue
+#             currRow, currCol = currPixel[0], currPixel[1]
+#             image[currRow][currCol] = newColor
+#             visited.add(currPixel)
+            
+#             topRow = currRow - 1
+#             if topRow >= 0 and image[topRow][currCol] == colorToChange:
+#                 queue.append((topRow, currCol))
+                
+#             bottomRow = currRow + 1
+#             if bottomRow < numRows and image[bottomRow][currCol] == colorToChange:
+#                 queue.append((bottomRow, currCol))
+                
+#             leftCol = currCol - 1
+#             if leftCol >= 0 and image[currRow][leftCol] == colorToChange:
+#                 queue.append((currRow, leftCol))
+                
+#             rightCol = currCol + 1
+#             if rightCol < numCols and image[currRow][rightCol] == colorToChange:
+#                 queue.append((currRow, rightCol))
+                
+#         return image
+
+
+        # Method 3 - recursive
+    
+    visited = set()
+    self.floodHelper(image, sr, sc, image[sr][sc], newColor, visited)
+    return image
+    
+    def floodHelper(self, image, currRow, currCol, colorToChange, newColor, visited):
+        numRows, numCols = len(image), len(image[0])
+        if currRow < 0 or currRow >= numRows or currCol < 0 or currCol >= numCols:
+            return
+        if image[currRow][currCol] != colorToChange:
+            return
+        image[currRow][currCol] = newColor
+        visited.add((currRow, currCol))
+        self.floodHelper(image, currRow - 1, currCol, colorToChange, newColor, visited)
+        self.floodHelper(image, currRow + 1, currCol, colorToChange, newColor, visited)
+        self.floodHelper(image, currRow, currCol - 1, colorToChange, newColor, visited)
+        self.floodHelper(image, currRow, currCol + 1, colorToChange, newColor, visited)
