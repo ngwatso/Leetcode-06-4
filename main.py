@@ -203,37 +203,37 @@ class Solution:
 
         # Method 2 - BFS
     
-#         colorToChange = image[sr][sc]
-#         queue = deque()
-#         queue.append((sr, sc))
-#         visited = set()
-#         numRows, numCols = len(image), len(image[0])
+        colorToChange = image[sr][sc]
+        queue = deque()
+        queue.append((sr, sc))
+        visited = set()
+        numRows, numCols = len(image), len(image[0])
         
-#         while len(queue) > 0:
-#             currPixel = queue.popleft()
-#             if currPixel in visited:
-#                 continue
-#             currRow, currCol = currPixel[0], currPixel[1]
-#             image[currRow][currCol] = newColor
-#             visited.add(currPixel)
+        while len(queue) > 0:
+            currPixel = queue.popleft()
+            if currPixel in visited:
+                continue
+            currRow, currCol = currPixel[0], currPixel[1]
+            image[currRow][currCol] = newColor
+            visited.add(currPixel)
             
-#             topRow = currRow - 1
-#             if topRow >= 0 and image[topRow][currCol] == colorToChange:
-#                 queue.append((topRow, currCol))
+            topRow = currRow - 1
+            if topRow >= 0 and image[topRow][currCol] == colorToChange:
+                queue.append((topRow, currCol))
                 
-#             bottomRow = currRow + 1
-#             if bottomRow < numRows and image[bottomRow][currCol] == colorToChange:
-#                 queue.append((bottomRow, currCol))
+            bottomRow = currRow + 1
+            if bottomRow < numRows and image[bottomRow][currCol] == colorToChange:
+                queue.append((bottomRow, currCol))
                 
-#             leftCol = currCol - 1
-#             if leftCol >= 0 and image[currRow][leftCol] == colorToChange:
-#                 queue.append((currRow, leftCol))
+            leftCol = currCol - 1
+            if leftCol >= 0 and image[currRow][leftCol] == colorToChange:
+                queue.append((currRow, leftCol))
                 
-#             rightCol = currCol + 1
-#             if rightCol < numCols and image[currRow][rightCol] == colorToChange:
-#                 queue.append((currRow, rightCol))
+            rightCol = currCol + 1
+            if rightCol < numCols and image[currRow][rightCol] == colorToChange:
+                queue.append((currRow, rightCol))
                 
-#         return image
+        return image
 
 
         # Method 3 - recursive
@@ -256,3 +256,34 @@ class Solution:
         self.floodHelper(image, currRow + 1, currCol, colorToChange, newColor, visited)
         self.floodHelper(image, currRow, currCol - 1, colorToChange, newColor, visited)
         self.floodHelper(image, currRow, currCol + 1, colorToChange, newColor, visited)
+
+# ===============
+
+from collections import deque
+
+def csFriendCircles(friendships):
+    
+    '''
+    
+    [[1,1,0],
+     [1,1,0],
+     [0,0,1]]
+    
+    '''
+    count = 0
+    visited = set()
+    l = len(friendships)    
+    
+    for i in range(l):
+        if i not in visited:
+            count += 1
+            visited.add(i)
+            csFriendsCircleHelper(friendships, i, visited)
+            
+    return count
+            
+def csFriendsCircleHelper(friendships, currNode, visited):
+    for node, edge in enumerate(friendships[currNode]):
+        if edge == 1 and node not in visited:
+            visited.add(node)
+            csFriendsCircleHelper(friendships, node, visited)
